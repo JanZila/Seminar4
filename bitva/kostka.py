@@ -8,12 +8,12 @@ class Kostka:
 
     def hod(self):
         return random.randint(1,self.__pocet_sten)
-
+    
     def __str__(self):
-        return f'Toto je kostka s {self.__pocet_sten} stenami'
-
+        return f'Toto je kostka s {self.__pocet_sten} stenami.'
+    
     def getPocet_sten(self):
-    return self.__pocet_sten
+        return self.__pocet_sten
 
 def main():
     k1 = Kostka()
@@ -23,4 +23,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

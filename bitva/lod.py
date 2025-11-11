@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-Lod odvozene tridy pro vesmirny souboj.
+Lod a odvozene tridy pro souboj.
 '''
 
 class Lod:
@@ -17,9 +17,12 @@ class Lod:
         self._stit = stit
         self._kostka = kostka
         self._zprava = ''
-
+    
     def __str__(self):
         return str(self._jmeno)
+    
+    def je_operacni(self):
+        return self._trup > 0
 
     def utoc(self, souper):
         uder = self._utok + self._kostka.hod()
@@ -33,14 +36,14 @@ class Lod:
             zprava = f'{self._jmeno} utrpela zasah o sile {poskozeni} hp.'
             self._trup -= poskozeni
             if self._trup < 0:
-                self.trup = 0
+                self._trup = 0
                 zprava = f'{zprava[:-1]} a byla znicena.'
         else:
-            zprava = f'{self._jmeno} odrazila utok stity.'
+            zprava = f'{self._jmeno} odrazil utok stity.'
         self.nastav_zpravu(zprava)
 
     def nastav_zpravu(self, zprava):
         self._zprava = zprava
-
+    
     def vypis_zpravu(self):
         return self._zprava
