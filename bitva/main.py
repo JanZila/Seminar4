@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from kostka import Kostka 
-from lod import Lod 
+from lod import Lod, Stihac
 
 class Sektor:
     """
@@ -24,7 +24,7 @@ class Sektor:
         
     def _vypis_lod(self, lod):
         print(lod)
-        print(f'Trup: {lod._trup}')
+        print(f'Trup: {lod.graficky_trup()}')
 
     def _vykresli(self):
         self._vycisti()
@@ -73,8 +73,9 @@ if __name__ == '__main__':
     lodicka = Lod("Queen Marry", 100, 80, 50, k)
     clun = Lod("Gumotex", 140, 20, 30, k)
     l = Lod("Yachta", kostka=k, trup=80, utok=60, stit=70)
+    fighter = Stihac("Killer", 90, 50, 60, k, 30, 90)
     
-    orion = Sektor(lodicka, clun, k, "Orion")
+    orion = Sektor(lodicka, fighter, k, "Orion")
     gamma = Sektor(lodicka, l, k, "Gamma")
 
     orion.souboj()
