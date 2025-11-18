@@ -24,12 +24,15 @@ class Lod:
     def je_operacni(self):
         return self._trup > 0
 
-    def graficky_trup(self):
+    def graficky_ukazatel(self, aktualni, maximalni):
         celkem = 20
-        pocet = int(self._trup / self._max_trup * celkem)
+        pocet = int(aktualni / maximalni * celkem)
         if pocet == 0 and self.je_operacni():
             pocet = 1
         return f"[{'#'*pocet}{' '*(celkem-pocet)}]"
+
+    def graficky_trup(self):
+        return self.graficky_ukazatel(self._trup, self._max_trup)
 
     def utoc(self, souper):
         uder = self._utok + self._kostka.hod()
@@ -63,10 +66,10 @@ class Stihac(Lod):
     """
 
     def __init__(self, jmeno, trup, utok, stit, kostka, energie, laserovy_utok):
-    super().__init__(jmeno, trup, utok, stit, kostka)
-    self._energie = energie
-    self._max_energie = energie
-    self._laserovy_utok = laserovy_utok
+        super().__init__(jmeno, trup, utok, stit, kostka)
+        self._energie = energie
+        self._max_energie = energie
+        self._laserovy_utok = laserovy_utok
 
     def utoc(self, souper):
         if self._energie < self._max_energie:
@@ -77,4 +80,24 @@ class Stihac(Lod):
             self.nastav_zpravu(f'{self._jmeno} utoci LASERem o síle {uder} hp.')
             self._energie = 0
             souper.bran_se(uder)
+
+    def graficka_energie(self):
+        return self.graficky_ukazatel(self._energie, self._max_energie)
             
+
+class Korveta(Lod):
+    """
+    Odvozana trida, ktera ma silejsi obranu.
+    """
+
+    def bran_se(self, uder):
+        poskozeni = uder - (self._stit + self._kostka.hod() + 2)
+        if poskozeni > 0:
+            zprava = f'{self._jmeno} utrpela zasah o sile {poskozeni} hp.'
+            self._trup -= poskozeni
+            if self._trup < 0:
+                self._trup = 0
+                zprava = f'{zprava[:-1]} a byla znicena.'
+        else:
+            zprava = f'{self._jmeno} odrazila utok adaptivnimi stity.'
+        self.nastav_zpravu(zprava)
