@@ -26,11 +26,11 @@ class Lod:
 
     def graficky_ukazatel(self, aktualni, maximalni):
         celkem = 20
-        pocet = int(aktualni / maximalni * celkem)
+        pocet  = int(aktualni / maximalni * celkem)
         if pocet == 0 and self.je_operacni():
             pocet = 1
         return f"[{'#'*pocet}{' '*(celkem-pocet)}]"
-
+    
     def graficky_trup(self):
         return self.graficky_ukazatel(self._trup, self._max_trup)
 
@@ -61,7 +61,7 @@ class Lod:
 
 class Stihac(Lod):
     """
-    Odvozaena trida, ktera pridava energii pro laserovy vyboj.
+    Odvozena trida, ktera pridava energii pro laserovy vyboj.
     Demonstruje dedicnost, polymorfismus a pretizeni metody.
     """
 
@@ -70,34 +70,29 @@ class Stihac(Lod):
         self._energie = energie
         self._max_energie = energie
         self._laserovy_utok = laserovy_utok
-
+    
     def utoc(self, souper):
         if self._energie < self._max_energie:
             self._energie = min(self._max_energie, self._energie + 10)
             super().utoc(souper)
         else:
             uder = self._laserovy_utok + self._kostka.hod()
-            self.nastav_zpravu(f'{self._jmeno} utoci LASERem o síle {uder} hp.')
+            self.nastav_zpravu(f'{self._jmeno} utoci LASERem o sile {uder} hp.')
             self._energie = 0
             souper.bran_se(uder)
-
+    
     def graficka_energie(self):
         return self.graficky_ukazatel(self._energie, self._max_energie)
-            
 
 class Korveta(Lod):
-    """
-    Odvozana trida, ktera ma silejsi obranu.
-    """
 
     def bran_se(self, uder):
         poskozeni = uder - (self._stit + self._kostka.hod() + 2)
         if poskozeni > 0:
-            zprava = f'{self._jmeno} utrpela zasah o sile {poskozeni} hp.'
             self._trup -= poskozeni
             if self._trup < 0:
                 self._trup = 0
-                zprava = f'{zprava[:-1]} a byla znicena.'
+            self.nastav_zpravu(f'{self._jmeno} utrpela poskozeni {poskozeni}.')
         else:
-            zprava = f'{self._jmeno} odrazila utok adaptivnimi stity.'
-        self.nastav_zpravu(zprava)
+            self.nastav_zpravu(f'{self._jmeno} zcela pohltila utok adaptivnim stitem.')
+
